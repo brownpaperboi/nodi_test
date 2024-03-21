@@ -42,7 +42,7 @@ with tab1:
             validation_status = f'Invalid - {e}'
                 
         blocklist_flag = 1 if input.partition('@')[2] in blocklist_content else 0
-        domain = tldextract.extract(input).domain + '.' + tldextract.extract(input).suffix
+        domain = tldextract.extract(input).domain + '.' + tldextract.extract(input).suffix 
         suggested_domain = closest_domain(domain, known_domains)
         
         results_df = results_df.append({
@@ -54,7 +54,7 @@ with tab1:
 
         st.dataframe(results_df)
     
-
+## This is to capture CSV input of email users
 with tab2:
     st.header("Validate CSV File of Emails")
 
