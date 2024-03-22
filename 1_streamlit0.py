@@ -4,6 +4,7 @@ import tldextract
 from email_validator import validate_email, EmailNotValidError
 import Levenshtein as lev
 import streamlit as st
+import requests
 
 st.title(" Welcome to Nodi! 👋")
 st.markdown(
@@ -12,10 +13,15 @@ st.markdown(
                 """
 )
 
+url = 'https://github.com/brownpaperboi/nodi_streamlit/blob/03e16503a09d7c9826ce1e82d5d6834dbee02889/disposable_email_blocklist.conf'
 
+response =  requests.get(url)
+if response.status_code == 200:
+    blocklist_content = {line.strip() for line in response.text.split('\n')}
+else:
+    st.error('Failed to load the blocklist file from GitHub.')
+    blocklist_content = set()
 
-with open('C:/Users/abdel/Documents/Nodi Labs/disposable_email_blocklist.conf') as blocklist:
-    blocklist_content = {line.strip() for line in blocklist}
 known_domains = ['gmail.com', 'yahoo.com', 'udel.edu',  'hotmail.com']
 results_df = pd.DataFrame(columns=['Email', 'Validation_Status', 'Blocklist_flag'])
 
@@ -54,7 +60,7 @@ with tab1:
 
         st.dataframe(results_df)
     
-## This is to capture CSV input of email users
+## This is to capture CSV input of email usersg
 with tab2:
     st.header("Validate CSV File of Emails")
 
